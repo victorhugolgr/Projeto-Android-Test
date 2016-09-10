@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/lytToast"
     android:orientation="horizontal"
-    android:background="@color/colorAccent"
+    android:background="@color/bg_toast"
 
     >
 
@@ -12,7 +12,7 @@
         android:layout_marginRight="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@drawable/info"/>
 
     <TextView
         android:textColor="@color/colorPrimaryDark"
