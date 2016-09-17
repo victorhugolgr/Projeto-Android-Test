@@ -8,13 +8,36 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <!-- Dialog custom style -->
-        <item name="android:alertDialogTheme">@style/AppTheme.Dark.Dialog</item>
+        <item name="android:alertDialogTheme">@style/AppTheme.Dark.Dialog.Info</item>
     </style>
 
-    <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
+    <!-- TEMAS PARA OS DIALOG'S -->
+    <!-- Info -->
+    <style name="AppTheme.Dark.Dialog.Info" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/colorPrimaryInfo</item>
+    </style>
+
+    <!--Erro-->
+    <style name="AppTheme.Dark.Dialog.Error" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:background">@color/colorPrimaryErro</item>
+    </style>
+
+    <!--Alerta-->
+    <style name="AppTheme.Dark.Dialog.Alert" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:background">@color/colorPrimaryAlert</item>
+    </style>
+
+    <!--Sucesso-->
+    <style name="AppTheme.Dark.Dialog.Success" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:background">@color/colorPrimaryInfo</item>
     </style>
 
 </resources>

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.vandame.project_blank.util.TipoMsg;
 import com.example.vandame.project_blank.util.Util;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         Util.showMsgToast(this,"Text App v1.0");
 
-        Util.showMsgAlertOK(this, "Titulo", "Minha mensagem");
+        Util.showMsgAlertOK(this, "Titulo", "Minha mensagem", TipoMsg.SUCESSO);
     }
 }

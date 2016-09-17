@@ -6,5 +6,11 @@
 
     <color name="white">#fff</color>
 
-    <color name="bg_toast">#84b9f5</color>
+    <color name="bg_toast">#81faa9</color>
+
+    <!-- -->
+    <color name="colorPrimaryInfo">#80e4ff</color>
+    <color name="colorPrimaryErro">#f95c61</color>
+    <color name="colorPrimaryAlert">#f5f356</color>
+    <color name="colorPrimarySuccess">#76f260</color>
 </resources>

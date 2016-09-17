@@ -5,8 +5,7 @@
     android:id="@+id/lytToast"
     android:orientation="horizontal"
     android:background="@color/bg_toast"
-
-    >
+    android:padding="10dp">
 
     <ImageView
         android:layout_marginRight="12dp"

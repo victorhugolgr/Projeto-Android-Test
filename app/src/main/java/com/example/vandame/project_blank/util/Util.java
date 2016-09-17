@@ -6,7 +6,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,16 +32,40 @@ public class Util {
         toast.show();
     }
 
-    public static void showMsgAlertOK(Activity activity, String titulo, String txt){
+    public static void showMsgAlertOK(Activity activity, String titulo, String txt, TipoMsg tipoMsg){
+
+        int theme = 0;
+        int icone = 0;
+        switch (tipoMsg){
+            case INFO:
+                theme = R.style.AppTheme_Dark_Dialog_Info;
+                icone = R.drawable.info;
+                break;
+
+            case ERRO:
+                theme = R.style.AppTheme_Dark_Dialog_Error;
+                icone = R.drawable.error;
+                break;
+
+            case ALERTA:
+                theme = R.style.AppTheme_Dark_Dialog_Alert;
+                icone = R.drawable.alert;
+
+            case SUCESSO:
+                theme = R.style.AppTheme_Dark_Dialog_Success;
+                icone = R.drawable.success;
+        }
+
         /*
          *Dialog
          */
-        AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(activity, theme).create();
         alertDialog.setTitle(titulo);
         alertDialog.setMessage(txt);
-        alertDialog.setIcon(R.drawable.info);
+        alertDialog.setIcon(icone);
+
         //Exibe o botão ok no dialog
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "OK", new DialogInterface.OnClickListener(){
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
