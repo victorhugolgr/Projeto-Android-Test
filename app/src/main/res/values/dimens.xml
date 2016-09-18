@@ -4,5 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Criadas por mim -->
-    <dimen name="texto_padrao">12sp</dimen>
+    <dimen name="texto_padrao">20sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

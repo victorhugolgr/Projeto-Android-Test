@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Método que será executado ao clicar no botão enviar.
     public void clickBtnEnviar(View view) {
         Util.showMsgAlertOK(MainActivity.this, "Titulo", "Minha mensagem", TipoMsg.SUCESSO);
     }
