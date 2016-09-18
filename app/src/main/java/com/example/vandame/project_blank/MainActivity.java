@@ -1,14 +1,8 @@
 package com.example.vandame.project_blank;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.vandame.project_blank.util.TipoMsg;
 import com.example.vandame.project_blank.util.Util;
@@ -25,8 +19,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle("Bem vindo, Victor");
 
-        Util.showMsgToast(this,"Text App v1.0");
 
-        Util.showMsgAlertOK(this, "Titulo", "Minha mensagem", TipoMsg.SUCESSO);
+    }
+
+    public void clickBtnEnviar(View view) {
+        Util.showMsgAlertOK(MainActivity.this, "Titulo", "Minha mensagem", TipoMsg.SUCESSO);
     }
 }

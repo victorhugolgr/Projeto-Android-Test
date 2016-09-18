@@ -14,5 +14,18 @@
         android:text="@string/ola_mundo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|left" />
+        android:layout_gravity="right|left"
+        android:id="@+id/textView" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enviar"
+        android:id="@+id/btnEnviar"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:onClick="clickBtnEnviar"/>
+
 </RelativeLayout>

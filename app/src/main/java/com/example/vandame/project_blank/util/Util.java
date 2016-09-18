@@ -32,11 +32,11 @@ public class Util {
         toast.show();
     }
 
-    public static void showMsgAlertOK(Activity activity, String titulo, String txt, TipoMsg tipoMsg){
+    public static void showMsgAlertOK(final Activity activity, String titulo, String txt, TipoMsg tipoMsg) {
 
         int theme = 0;
         int icone = 0;
-        switch (tipoMsg){
+        switch (tipoMsg) {
             case INFO:
                 theme = R.style.AppTheme_Dark_Dialog_Info;
                 icone = R.drawable.info;
@@ -59,17 +59,18 @@ public class Util {
         /*
          *Dialog
          */
-        AlertDialog alertDialog = new AlertDialog.Builder(activity, theme).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(activity, theme).create();
         alertDialog.setTitle(titulo);
         alertDialog.setMessage(txt);
         alertDialog.setIcon(icone);
 
         //Exibe o botão ok no dialog
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener(){
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                Util.showMsgToast(activity, "Text App v1.0");
+                alertDialog.dismiss();
             }
         });
 
