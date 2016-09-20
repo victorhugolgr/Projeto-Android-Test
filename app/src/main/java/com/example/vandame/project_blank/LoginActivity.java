@@ -9,7 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.vandame.project_blank.util.Util;
+import com.example.vandame.project_blank.bo.LoginBO;
+import com.example.vandame.project_blank.validation.LoginValidation;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -19,12 +20,20 @@ public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences preferences;
 
+    private LoginBO loginBO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        preferences = getPreferences(Context.MODE_PRIVATE);
+        loginBO = new LoginBO();
+
+        /**
+         * Captura as variáveis salvas em memória. Se a variável já existir na memória então redireciona
+         * para a página de login direto.
+         */
+        preferences = getSharedPreferences("pref",Context.MODE_PRIVATE);
 
         String login = preferences.getString("login", null);
         String senha = preferences.getString("senha", null);
@@ -44,7 +53,14 @@ public class LoginActivity extends AppCompatActivity {
                 String login = edtLogin.getText().toString();
                 String senha = edtSenha.getText().toString();
 
-                boolean isValido = validarCamposLogin(login, senha);
+                LoginValidation loginValidation = new LoginValidation();
+                loginValidation.setActivity(LoginActivity.this);
+                loginValidation.setEditLogin(edtLogin);
+                loginValidation.setEditSenha(edtSenha);
+                loginValidation.setLogin(login);
+                loginValidation.setSenha(senha);
+
+                boolean isValido = loginBO.validarCamposLogin(loginValidation);
 
                 if (isValido) {
                     //Navegação entre as Activity
@@ -58,32 +74,4 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private boolean validarCamposLogin(String login, String senha) {
-        boolean resultado = true;
-
-        if (login == null || "".equals(login)) {
-            edtLogin.setError("Campo Obrigatório");
-            resultado = false;
-        }
-
-        if (senha == null || "".equals(senha)) {
-            edtSenha.setError("Campo Obrigatório");
-            resultado = false;
-        }
-
-        if (resultado) {
-            if (!login.equals("admin") || !senha.equals("admin")) {
-                Util.showMsgToast(LoginActivity.this, "Login/Senha inválidos!");
-                resultado = false;
-            }
-        } else {
-            //Grava em memória os dados do login
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("login", login);
-            editor.putString("senha", senha);
-            editor.commit();
-        }
-
-        return resultado;
-    }
 }
