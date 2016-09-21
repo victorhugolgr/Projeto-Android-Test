@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginBO = new LoginBO();
+        loginBO = new LoginBO(this);
 
         /**
          * Captura as variáveis salvas em memória. Se a variável já existir na memória então redireciona

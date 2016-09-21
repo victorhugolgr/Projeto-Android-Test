@@ -1,8 +1,10 @@
 package com.example.vandame.project_blank.bo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.vandame.project_blank.repository.LoginRepository;
 import com.example.vandame.project_blank.util.Util;
 import com.example.vandame.project_blank.validation.LoginValidation;
 
@@ -10,6 +12,13 @@ import com.example.vandame.project_blank.validation.LoginValidation;
  * Created by vandame on 19/09/16.
  */
 public class LoginBO {
+
+    private LoginRepository loginRepository;
+
+    public LoginBO(Activity activity){
+        loginRepository = new LoginRepository(activity);
+        loginRepository.popularBD();
+    }
 
     public boolean validarCamposLogin(LoginValidation validation) {
         boolean resultado = true;
