@@ -1,8 +1,10 @@
 package com.example.vandame.project_blank.repository;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.vandame.project_blank.util.Constantes;
 
@@ -39,5 +41,14 @@ public class LoginRepository extends SQLiteOpenHelper{
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query.toString(), new String[]{"admin", "admin"});
+    }
+
+    public void listarLogins(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query("TB_LOGIN", null, null, null, null, null, "USUARIO");
+
+        while (cursor.moveToNext()){
+            Log.d("NOME DE USUÁRIO", cursor.getString(1));
+        }
     }
 }
