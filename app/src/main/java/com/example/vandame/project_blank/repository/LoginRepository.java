@@ -1,6 +1,7 @@
 package com.example.vandame.project_blank.repository;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,8 @@ import android.util.Log;
 
 import com.example.vandame.project_blank.util.Constantes;
 import com.example.vandame.project_blank.util.Util;
+
+import java.util.ArrayList;
 
 /**
  * Created by vandame on 20/09/16.
@@ -60,5 +63,30 @@ public class LoginRepository extends SQLiteOpenHelper {
             Util.showMsgToast(activity, "USURÁIO = " + String.valueOf(cursor.getInt(0)));
         }
 
+    }
+
+    public void addLogin(String login, String senha){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("USUARIO", login);
+        contentValues.put("SENHA", senha);
+
+        db.insert("TB_LOGIN", null, contentValues);
+    }
+
+    public void updateLogin(String login, String senha){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("USUARIO", login);
+        contentValues.put("SENHA", senha);
+
+        db.update("TB_LOGIN", contentValues, "id_login > 1", null);
+    }
+
+    public void deleteLogin(String login, String senha){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("TB_LOGIN", "USUARIO = ? OR SENHA = ?",  new String[]{login, senha});
     }
 }

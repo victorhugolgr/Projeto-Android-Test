@@ -34,6 +34,9 @@ public class LoginBO {
         }
 
         if (resultado) {
+
+            loginRepository.addLogin(validation.getLogin(), validation.getSenha());
+
             if (!validation.getLogin().equals("admin") || !validation.getSenha().equals("admin")) {
                 Util.showMsgToast(validation.getActivity(), "Login/Senha inválidos!");
                 resultado = false;
