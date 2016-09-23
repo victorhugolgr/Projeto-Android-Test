@@ -17,7 +17,7 @@ public class LoginBO {
 
     public LoginBO(Activity activity){
         loginRepository = new LoginRepository(activity);
-        loginRepository.popularBD();
+        loginRepository.listarLogins(activity);
     }
 
     public boolean validarCamposLogin(LoginValidation validation) {
