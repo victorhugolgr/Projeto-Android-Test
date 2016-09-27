@@ -106,6 +106,13 @@
             android:layout_height="wrap_content" />
 
         <Button
+            android:id="@+id/btnData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="setData"
+            android:text="DAta Nasc." />
+
+        <Button
             android:id="@+id/btnEnviar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
