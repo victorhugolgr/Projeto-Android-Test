@@ -7,5 +7,5 @@ public class Constantes {
 
     public static final String BD_NOME = "loja-java";
 
-    public static final int BD_VERSAO = 1;
+    public static final int BD_VERSAO = 2;
 }
