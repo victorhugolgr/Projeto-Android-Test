@@ -45,13 +45,13 @@
             android:text="CPF" />
 
         <EditText
-            android:id="@+id/editCpfCnpj"
+            android:id="@+id/edtCpfCnpj"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"/>
 
         <RadioGroup
-            android:id="@+id/rgbCpfCnpj"
+            android:id="@+id/rbgCpfCnpj"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -111,6 +111,12 @@
             android:layout_height="wrap_content"
             android:onClick="setData"
             android:text="DAta Nasc." />
+
+        <EditText
+            android:id="@+id/edtNasc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"/>
 
         <Button
             android:id="@+id/btnEnviar"
