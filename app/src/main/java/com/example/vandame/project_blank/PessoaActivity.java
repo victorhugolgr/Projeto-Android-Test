@@ -19,6 +19,7 @@ import com.example.vandame.project_blank.entidade.Profissao;
 import com.example.vandame.project_blank.entidade.Sexo;
 import com.example.vandame.project_blank.entidade.TipoPessoa;
 import com.example.vandame.project_blank.fragment.DatePickerFragment;
+import com.example.vandame.project_blank.repository.PessoaRepository;
 import com.example.vandame.project_blank.util.Mask;
 import com.example.vandame.project_blank.util.Util;
 
@@ -49,16 +50,20 @@ public class PessoaActivity extends AppCompatActivity {
 
     private int cpfCpnfSelecionado;
 
+    private PessoaRepository pessoaRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pessoa);
 
+        pessoaRepository = new PessoaRepository(this);
+
         txtCpfCnpj = (TextView) findViewById(R.id.txtCpfCnpj);
         edtCpfCnpj = (EditText) findViewById(R.id.edtCpfCnpj);
         edtNasc = (EditText) findViewById(R.id.edtNasc);
         edtNome = (EditText) findViewById(R.id.edt_nome);
-        edtNome = (EditText) findViewById(R.id.edt_endereco);
+        edtEndereco = (EditText) findViewById(R.id.edt_endereco);
 
         spnProfissao = (Spinner) findViewById(R.id.spnProfissao);
 
@@ -127,7 +132,7 @@ public class PessoaActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            edtNasc.setText(dayOfMonth + "/" + (monthOfYear + 1)  + "/" + year);
+            edtNasc.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
             Util.showMsgToast(PessoaActivity.this, "Ano: " + year + ", Mes: " + (monthOfYear + 1) + ", Dia: " + dayOfMonth);
         }
     };
@@ -142,17 +147,64 @@ public class PessoaActivity extends AppCompatActivity {
         spnProfissao.setAdapter(adapter);
     }
 
-    public void enviarPessoa(View view){
-        montarPessoa();
+    public void enviarPessoa(View view) {
+        Pessoa p = montarPessoa();
+        if (!validarPessoa(p)) {
+            pessoaRepository.salvarPessoa(p);
+        }
+
     }
 
-    public void montarPessoa(){
+    private boolean validarPessoa(Pessoa pessoa) {
+        boolean erro = false;
+        if (pessoa.getNome() == null || pessoa.getNome() == "") {
+            erro = true;
+            edtNome.setError("Campo Nome obrigatório");
+        }
+        if (pessoa.getEnderco() == null || "".equals(pessoa.getEnderco())) {
+            erro = true;
+            edtEndereco.setError("Campo Endereço obrigatório");
+        }
+        if (pessoa.getCpfCnpj() == null || "".equals(pessoa.getCpfCnpj())) {
+            erro = true;
+            switch (rbgCpfCnpj.getCheckedRadioButtonId()) {
+                case R.id.rbtCpf:
+                    edtCpfCnpj.setError("Campo CPF obrigatório");
+                    break;
+                case R.id.rbtCnpj:
+                    edtCpfCnpj.setError("Campo CNPJ obrigatório");
+                    break;
+            }
+        } else {
+            switch (rbgCpfCnpj.getCheckedRadioButtonId()) {
+                case R.id.rbtCpf:
+                    if (edtCpfCnpj.getText().length() < 14) {
+                        erro = true;
+                        edtCpfCnpj.setError("Campo CPF deve ter 11 caracteres");
+                    }
+                case R.id.rbtCnpj:
+                    if (edtCpfCnpj.getText().length() < 18) {
+                        erro = true;
+                        edtCpfCnpj.setError("Campo CNPJ deve ter 18 caracteres");
+                    }
+            }
+        }
+
+        if (pessoa.getDtNasc() == null) {
+            erro = true;
+            edtNasc.setError("Campo Data Nascimento obrigatório");
+        }
+
+        return erro;
+    }
+
+    public Pessoa montarPessoa() {
         Pessoa pessoa = new Pessoa();
 
         pessoa.setNome(edtNome.getText().toString());
         pessoa.setEnderco(edtEndereco.getText().toString());
         pessoa.setCpfCnpj(edtCpfCnpj.getText().toString());
-        switch (rbgCpfCnpj.getCheckedRadioButtonId()){
+        switch (rbgCpfCnpj.getCheckedRadioButtonId()) {
             case R.id.rbtCpf:
                 pessoa.setTipoPessoa(TipoPessoa.FISICA);
                 break;
@@ -161,7 +213,7 @@ public class PessoaActivity extends AppCompatActivity {
                 break;
         }
 
-        switch (rbgSexo.getCheckedRadioButtonId()){
+        switch (rbgSexo.getCheckedRadioButtonId()) {
             case R.id.rbtMasc:
                 pessoa.setSexo(Sexo.MASCULINO);
                 break;
@@ -183,5 +235,7 @@ public class PessoaActivity extends AppCompatActivity {
         }
 
         Util.showMsgToast(this, pessoa.toString());
+
+        return pessoa;
     }
 }
