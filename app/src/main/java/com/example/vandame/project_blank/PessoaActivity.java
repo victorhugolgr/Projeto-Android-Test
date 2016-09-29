@@ -14,23 +14,33 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.vandame.project_blank.entidade.Pessoa;
 import com.example.vandame.project_blank.entidade.Profissao;
+import com.example.vandame.project_blank.entidade.Sexo;
+import com.example.vandame.project_blank.entidade.TipoPessoa;
 import com.example.vandame.project_blank.fragment.DatePickerFragment;
 import com.example.vandame.project_blank.util.Mask;
 import com.example.vandame.project_blank.util.Util;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class PessoaActivity extends AppCompatActivity {
     private Spinner spnProfissao;
 
     private TextView txtCpfCnpj;
 
+    private EditText edtNome;
+    private EditText edtEndereco;
     private EditText edtCpfCnpj;
     private EditText edtNasc;
 
     private RadioGroup rbgCpfCnpj;
+    private RadioGroup rbgSexo;
 
     private RadioButton rbtCpf;
 
@@ -45,10 +55,16 @@ public class PessoaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pessoa);
 
         txtCpfCnpj = (TextView) findViewById(R.id.txtCpfCnpj);
-        spnProfissao = (Spinner) findViewById(R.id.spnProfissao);
         edtCpfCnpj = (EditText) findViewById(R.id.edtCpfCnpj);
         edtNasc = (EditText) findViewById(R.id.edtNasc);
+        edtNome = (EditText) findViewById(R.id.edt_nome);
+        edtNome = (EditText) findViewById(R.id.edt_endereco);
+
+        spnProfissao = (Spinner) findViewById(R.id.spnProfissao);
+
         rbgCpfCnpj = (RadioGroup) findViewById(R.id.rbgCpfCnpj);
+        rbgSexo = (RadioGroup) findViewById(R.id.rbgSexo);
+
         rbtCpf = (RadioButton) findViewById(R.id.rbtCpf);
 
         cpfMask = Mask.insert("###.###.###-##", edtCpfCnpj);
@@ -124,5 +140,48 @@ public class PessoaActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter(PessoaActivity.this, android.R.layout.simple_spinner_item, profissoes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnProfissao.setAdapter(adapter);
+    }
+
+    public void enviarPessoa(View view){
+        montarPessoa();
+    }
+
+    public void montarPessoa(){
+        Pessoa pessoa = new Pessoa();
+
+        pessoa.setNome(edtNome.getText().toString());
+        pessoa.setEnderco(edtEndereco.getText().toString());
+        pessoa.setCpfCnpj(edtCpfCnpj.getText().toString());
+        switch (rbgCpfCnpj.getCheckedRadioButtonId()){
+            case R.id.rbtCpf:
+                pessoa.setTipoPessoa(TipoPessoa.FISICA);
+                break;
+            case R.id.rbtCnpj:
+                pessoa.setTipoPessoa(TipoPessoa.JURIDICA);
+                break;
+        }
+
+        switch (rbgSexo.getCheckedRadioButtonId()){
+            case R.id.rbtMasc:
+                pessoa.setSexo(Sexo.MASCULINO);
+                break;
+            case R.id.rbtFem:
+                pessoa.setSexo(Sexo.FEMININO);
+                break;
+        }
+
+        pessoa.setProfissao(Profissao.getProfissao(spnProfissao.getSelectedItemPosition()));
+
+
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date nasc = dateFormat.parse(edtNasc.getText().toString());
+            pessoa.setDtNasc(nasc);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Util.showMsgToast(this, pessoa.toString());
     }
 }

@@ -14,13 +14,22 @@ public enum Profissao {
     ZELADOR("Zelador"),
     CARTEIRO("Carteiro");
 
-    private Profissao(String descricao){
+    private Profissao(String descricao) {
         this.descricao = descricao;
     }
 
     private String descricao;
 
-    public String getDescricao(){
-        return  descricao;
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public static Profissao getProfissao(int pos) {
+        for (Profissao profissao : Profissao.values()) {
+            if (profissao.ordinal() == pos) {
+                return profissao;
+            }
+        }
+        return null;
     }
 }
