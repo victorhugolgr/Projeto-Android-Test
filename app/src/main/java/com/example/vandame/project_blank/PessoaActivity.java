@@ -178,14 +178,16 @@ public class PessoaActivity extends AppCompatActivity {
         } else {
             switch (rbgCpfCnpj.getCheckedRadioButtonId()) {
                 case R.id.rbtCpf:
-                    if (edtCpfCnpj.getText().length() < 14) {
+                    if (edtCpfCnpj.getText().length() < 14 && rbgCpfCnpj.getCheckedRadioButtonId() == R.id.rbtCpf) {
                         erro = true;
                         edtCpfCnpj.setError("Campo CPF deve ter 11 caracteres");
+                        break;
                     }
                 case R.id.rbtCnpj:
-                    if (edtCpfCnpj.getText().length() < 18) {
+                    if (edtCpfCnpj.getText().length() < 18 && rbgCpfCnpj.getCheckedRadioButtonId() == R.id.rbtCnpj) {
                         erro = true;
                         edtCpfCnpj.setError("Campo CNPJ deve ter 18 caracteres");
+                        break;
                     }
             }
         }
