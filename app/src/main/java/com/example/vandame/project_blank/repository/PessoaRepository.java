@@ -2,12 +2,20 @@ package com.example.vandame.project_blank.repository;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.vandame.project_blank.entidade.Pessoa;
+import com.example.vandame.project_blank.entidade.Profissao;
+import com.example.vandame.project_blank.entidade.Sexo;
+import com.example.vandame.project_blank.entidade.TipoPessoa;
 import com.example.vandame.project_blank.util.Constantes;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by vandame on 27/09/16.
@@ -22,7 +30,7 @@ public class PessoaRepository extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         StringBuilder query = new StringBuilder();
-        query.append("CREATE TABLE TB_PESSOA( ");
+        query.append("CREATE TABLE IF NOT EXISTS TB_PESSOA( ");
         query.append(" ID_PESSOA INTEGER PRIMARY KEY AUTOINCREMENT, ");
         query.append(" NOME TEXT(30) NOT NULL, ");
         query.append(" ENDERECO TEXT(50), ");
@@ -60,5 +68,42 @@ public class PessoaRepository extends SQLiteOpenHelper {
         contentValues.put("DT_NASC", pessoa.getDtNasc().getTime());
 
         db.insert("TB_PESSOA", null, contentValues);
+    }
+
+    public List<Pessoa> listarPessoa() {
+        List<Pessoa> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("TB_PESSOA", null, null, null, null, null, "NOME");
+
+        while (cursor.moveToNext()) {
+            Pessoa pessoa = new Pessoa();
+            pessoa.setIdPessoa(cursor.getInt(cursor.getColumnIndex("ID_PESSOA")));
+            pessoa.setNome(cursor.getString(cursor.getColumnIndex("NOME")));
+            pessoa.setEnderco(cursor.getString(cursor.getColumnIndex("ENDERECO")));
+            String cpf = cursor.getString(cursor.getColumnIndex("CPF"));
+            String cnpj = cursor.getString(cursor.getColumnIndex("CNPJ"));
+            if (cpf != null) {
+                pessoa.setTipoPessoa(TipoPessoa.FISICA);
+                pessoa.setCpfCnpj(cpf);
+            } else {
+                pessoa.setTipoPessoa(TipoPessoa.JURIDICA);
+                pessoa.setCpfCnpj(cnpj);
+            }
+
+            int sexo =  cursor.getInt(cursor.getColumnIndex("SEXO"));
+            pessoa.setSexo(Sexo.getSexo(sexo));
+
+            int profissao =  cursor.getInt(cursor.getColumnIndex("PROFISSAO"));
+            pessoa.setProfissao(Profissao.getProfissao(profissao));
+
+            int time =  cursor.getInt(cursor.getColumnIndex("DT_NASC"));
+            Date dtNasd = new Date();
+            dtNasd.setTime(time);
+            pessoa.setDtNasc(dtNasd);
+
+            lista.add(pessoa);
+        }
+
+        return lista;
     }
 }
