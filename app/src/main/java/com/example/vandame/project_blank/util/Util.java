@@ -69,7 +69,6 @@ public class Util {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Util.showMsgToast(activity, "Text App v1.0");
                 alertDialog.dismiss();
             }
         });

@@ -96,7 +96,7 @@ public class PessoaRepository extends SQLiteOpenHelper {
             int profissao =  cursor.getInt(cursor.getColumnIndex("PROFISSAO"));
             pessoa.setProfissao(Profissao.getProfissao(profissao));
 
-            int time =  cursor.getInt(cursor.getColumnIndex("DT_NASC"));
+            long time =  cursor.getLong(cursor.getColumnIndex("DT_NASC"));
             Date dtNasd = new Date();
             dtNasd.setTime(time);
             pessoa.setDtNasc(dtNasd);

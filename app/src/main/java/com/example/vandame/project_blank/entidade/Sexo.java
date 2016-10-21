@@ -5,7 +5,13 @@ package com.example.vandame.project_blank.entidade;
  */
 
 public enum Sexo {
-    FEMININO, MASCULINO;
+    FEMININO("Masculino"), MASCULINO("Feminino");
+
+    private Sexo(String descricao){
+        this.descricao = descricao;
+    }
+
+    private String descricao;
 
     public static Sexo getSexo(int pos){
         for(Sexo sexo : Sexo.values()){
@@ -15,5 +21,9 @@ public enum Sexo {
         }
 
         return null;
+    }
+
+    public String getDescricao() {
+        return descricao;
     }
 }
