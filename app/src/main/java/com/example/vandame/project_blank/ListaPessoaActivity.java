@@ -1,7 +1,10 @@
 package com.example.vandame.project_blank;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -21,6 +24,8 @@ public class ListaPessoaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_pessoa);
+        getSupportActionBar().setTitle("Lista de Pessoas");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         pessoaRepository = new PessoaRepository(this);
 
@@ -36,5 +41,20 @@ public class ListaPessoaActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, valores);
 
         lstPessoa.setAdapter(adapter);
+    }
+
+    public void addNewPessoa(View view){
+        Intent i = new Intent(this, PessoaActivity.class);
+        startActivity(i);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

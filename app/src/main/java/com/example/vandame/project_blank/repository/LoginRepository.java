@@ -39,7 +39,18 @@ public class LoginRepository extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        StringBuilder query = new StringBuilder();
+        query.append("CREATE TABLE IF NOT EXISTS TB_PESSOA( ");
+        query.append(" ID_PESSOA INTEGER PRIMARY KEY AUTOINCREMENT,");
+        query.append(" NOME TEXT(30) NOT NULL,");
+        query.append(" ENDERECO TEXT(50),");
+        query.append(" CPF TEXT(14),");
+        query.append(" CNPJ TEXT(14),");
+        query.append(" SEXO INTEGER(1) NOT NULL,");
+        query.append(" PROFISSAO INTEGER(3) NOT NULL,");
+        query.append(" DT_NASC INTEGER NOT NULL)");
 
+        db.execSQL(query.toString());
     }
 
     private void popularBD(SQLiteDatabase db) {

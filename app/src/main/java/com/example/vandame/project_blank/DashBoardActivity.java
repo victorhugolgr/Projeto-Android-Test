@@ -11,9 +11,17 @@ public class DashBoardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
+
+
+        getSupportActionBar().hide();
     }
 
-    public void callCadastro(View view){}
+    public void callCadastro(View view){
+
+        Intent i = new Intent(this, PessoaActivity.class);
+        startActivity(i);
+
+    }
 
     public void callList(View view){
         Intent i = new Intent(this, ListaPessoaActivity.class);

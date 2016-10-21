@@ -52,7 +52,7 @@ public class PessoaRepository extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("NOME", pessoa.getNome());
-        contentValues.put("ENDRECO", pessoa.getEnderco());
+        contentValues.put("ENDERECO", pessoa.getEnderco());
 
         switch (pessoa.getTipoPessoa()) {
             case FISICA:

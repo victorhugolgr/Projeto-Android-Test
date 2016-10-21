@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_lista_pessoa"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.vandame.project_blank.ListaPessoaActivity">
 
+
     <ListView
+        android:id="@+id/lstPessoa"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lstPessoa"></ListView>
+        android:layout_weight="0.8"></ListView>
 
-</RelativeLayout>
+    <ImageButton
+        android:id="@+id/btnNewPessoa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@color/colorPrimary"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/circle"
+        android:onClick="addNewPessoa"
+        android:layout_marginRight="16dp" />
+
+</LinearLayout>

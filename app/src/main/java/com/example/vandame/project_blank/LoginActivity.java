@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (isValido) {
                     //Navegação entre as Activity
-                    Intent i = new Intent(LoginActivity.this, PessoaActivity.class);
+                    Intent i = new Intent(LoginActivity.this, DashBoardActivity.class);
                     startActivity(i);
                     finish();
                 }
