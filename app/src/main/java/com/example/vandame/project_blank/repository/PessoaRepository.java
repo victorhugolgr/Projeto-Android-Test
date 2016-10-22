@@ -16,6 +16,7 @@ import com.example.vandame.project_blank.util.Constantes;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by vandame on 27/09/16.
@@ -48,6 +49,33 @@ public class PessoaRepository extends SQLiteOpenHelper {
         Log.d("Teste de update", "onUpgrade: passou aqui");
     }
 
+    private void setPessoaFromCursor(Cursor cursor, Pessoa pessoa) {
+        pessoa.setIdPessoa(cursor.getInt(cursor.getColumnIndex("ID_PESSOA")));
+        pessoa.setNome(cursor.getString(cursor.getColumnIndex("NOME")));
+        pessoa.setEnderco(cursor.getString(cursor.getColumnIndex("ENDERECO")));
+        String cpf = cursor.getString(cursor.getColumnIndex("CPF"));
+        String cnpj = cursor.getString(cursor.getColumnIndex("CNPJ"));
+        if (cpf != null) {
+            pessoa.setTipoPessoa(TipoPessoa.FISICA);
+            pessoa.setCpfCnpj(cpf);
+        } else {
+            pessoa.setTipoPessoa(TipoPessoa.JURIDICA);
+            pessoa.setCpfCnpj(cnpj);
+        }
+
+        int sexo =  cursor.getInt(cursor.getColumnIndex("SEXO"));
+        pessoa.setSexo(Sexo.getSexo(sexo));
+
+        int profissao =  cursor.getInt(cursor.getColumnIndex("PROFISSAO"));
+        pessoa.setProfissao(Profissao.getProfissao(profissao));
+
+        long time =  cursor.getLong(cursor.getColumnIndex("DT_NASC"));
+        Date dtNasd = new Date();
+        dtNasd.setTime(time);
+        pessoa.setDtNasc(dtNasd);
+    }
+
+
     public void salvarPessoa(Pessoa pessoa) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -77,33 +105,24 @@ public class PessoaRepository extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
             Pessoa pessoa = new Pessoa();
-            pessoa.setIdPessoa(cursor.getInt(cursor.getColumnIndex("ID_PESSOA")));
-            pessoa.setNome(cursor.getString(cursor.getColumnIndex("NOME")));
-            pessoa.setEnderco(cursor.getString(cursor.getColumnIndex("ENDERECO")));
-            String cpf = cursor.getString(cursor.getColumnIndex("CPF"));
-            String cnpj = cursor.getString(cursor.getColumnIndex("CNPJ"));
-            if (cpf != null) {
-                pessoa.setTipoPessoa(TipoPessoa.FISICA);
-                pessoa.setCpfCnpj(cpf);
-            } else {
-                pessoa.setTipoPessoa(TipoPessoa.JURIDICA);
-                pessoa.setCpfCnpj(cnpj);
-            }
-
-            int sexo =  cursor.getInt(cursor.getColumnIndex("SEXO"));
-            pessoa.setSexo(Sexo.getSexo(sexo));
-
-            int profissao =  cursor.getInt(cursor.getColumnIndex("PROFISSAO"));
-            pessoa.setProfissao(Profissao.getProfissao(profissao));
-
-            long time =  cursor.getLong(cursor.getColumnIndex("DT_NASC"));
-            Date dtNasd = new Date();
-            dtNasd.setTime(time);
-            pessoa.setDtNasc(dtNasd);
+            setPessoaFromCursor(cursor, pessoa);
 
             lista.add(pessoa);
         }
 
         return lista;
+    }
+
+    public Pessoa consultarPessoaPorId(int idPessoa){
+        Pessoa pessoa = new Pessoa();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query("TB_PESSOA", null, "WHERE ID_PESSOA = ?", new String[]{String.valueOf(idPessoa)}, null, null, "NOME");
+
+        if(cursor.moveToNext()){
+            setPessoaFromCursor(cursor, pessoa);
+        }
+
+        return pessoa;
     }
 }

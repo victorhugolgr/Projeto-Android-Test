@@ -3,6 +3,7 @@ package com.example.vandame.project_blank;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +28,8 @@ public class ListaPessoaActivity extends AppCompatActivity {
 
     private List<Pessoa> listaPessoa;
 
+    private int posicaoSelecionada;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +52,37 @@ public class ListaPessoaActivity extends AppCompatActivity {
 
         lstPessoa.setAdapter(adapter);
         lstPessoa.setOnItemClickListener(clickListenerPessoas);
+
+        lstPessoa.setOnCreateContextMenuListener(contextMenuListener);
+
+        lstPessoa.setOnItemLongClickListener(longClickListener);
     }
 
+    //adiciona as opções ao menu de contexto
+    private View.OnCreateContextMenuListener contextMenuListener = new View.OnCreateContextMenuListener() {
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.add(1, 10, 1, "Editar");
+            menu.add(1, 20, 2, "Deletar");
+        }
+    };
+
+    //Observa a seleção da lista e seta a posição
+    private AdapterView.OnItemLongClickListener longClickListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            posicaoSelecionada = position;
+            return false;
+        }
+    };
+
+    /*
+     *Clique simples em cima da lista
+     */
     private AdapterView.OnItemClickListener clickListenerPessoas = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Pessoa pessoa = listaPessoa.get(position);
+            Pessoa pessoa = pessoaRepository.consultarPessoaPorId(listaPessoa.get(position).getIdPessoa());
 
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -76,6 +104,20 @@ public class ListaPessoaActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    //ações ao clicar no menu de contexto
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case 10:
+                Util.showMsgToast(this, "Editar");
+                break;
+            case 20:
+                Util.showMsgToast(this, listaPessoa.get(posicaoSelecionada).getNome());
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -85,4 +127,5 @@ public class ListaPessoaActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
