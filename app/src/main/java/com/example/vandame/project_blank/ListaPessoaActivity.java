@@ -1,5 +1,6 @@
 package com.example.vandame.project_blank;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ public class ListaPessoaActivity extends AppCompatActivity {
 
     private int posicaoSelecionada;
 
+    private ArrayAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,16 +44,8 @@ public class ListaPessoaActivity extends AppCompatActivity {
 
         lstPessoa = (ListView) findViewById(R.id.lstPessoa);
 
-        listaPessoa = pessoaRepository.listarPessoa();
-
-        List<String> valores = new ArrayList<>();
-        for (Pessoa pessoa : listaPessoa) {
-            valores.add(pessoa.getNome());
-        }
-
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, valores);
-
-        lstPessoa.setAdapter(adapter);
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+        setArrayAdapterPessoa();
         lstPessoa.setOnItemClickListener(clickListenerPessoas);
 
         lstPessoa.setOnCreateContextMenuListener(contextMenuListener);
@@ -58,12 +53,25 @@ public class ListaPessoaActivity extends AppCompatActivity {
         lstPessoa.setOnItemLongClickListener(longClickListener);
     }
 
+    private void setArrayAdapterPessoa() {
+        listaPessoa = pessoaRepository.listarPessoa();
+
+        List<String> valores = new ArrayList<>();
+        for (Pessoa pessoa : listaPessoa) {
+            valores.add(pessoa.getNome());
+        }
+
+        adapter.clear();
+        adapter.addAll(valores);
+        lstPessoa.setAdapter(adapter);
+    }
+
     //adiciona as opções ao menu de contexto
     private View.OnCreateContextMenuListener contextMenuListener = new View.OnCreateContextMenuListener() {
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(1, 10, 1, "Editar");
-            menu.add(1, 20, 2, "Deletar");
+            menu.setHeaderTitle("Opções").setHeaderIcon(R.drawable.edit).add(1, 10, 1, "Editar");
+            menu.add(1, 20, 2, "Deletar").setIcon(R.drawable.delete);
         }
     };
 
@@ -111,8 +119,18 @@ public class ListaPessoaActivity extends AppCompatActivity {
             case 10:
                 Util.showMsgToast(this, "Editar");
                 break;
+
             case 20:
-                Util.showMsgToast(this, listaPessoa.get(posicaoSelecionada).getNome());
+                Util.showMsgConfirm(ListaPessoaActivity.this, "Remover Pessoa", "Deseja realmente remover essa pessoa?", TipoMsg.ALERTA, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int idPessoa = listaPessoa.get(posicaoSelecionada).getIdPessoa();
+                        pessoaRepository.removerPessoaPorId(idPessoa);
+                        setArrayAdapterPessoa();
+                        adapter.notifyDataSetChanged();//refresh na lista
+                    }
+                });
+
                 break;
         }
         return super.onContextItemSelected(item);
