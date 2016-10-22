@@ -117,7 +117,11 @@ public class ListaPessoaActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case 10:
-                Util.showMsgToast(this, "Editar");
+                Pessoa pessoa = pessoaRepository.consultarPessoaPorId(listaPessoa.get(posicaoSelecionada).getIdPessoa());
+                Intent i = new Intent(this, EditarPessoaActivity.class);
+                i.putExtra("pessoa", pessoa);
+                startActivity(i);
+                finish();
                 break;
 
             case 20:

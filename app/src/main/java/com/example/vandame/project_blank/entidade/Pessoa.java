@@ -1,12 +1,13 @@
 package com.example.vandame.project_blank.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by vandame on 28/09/16.
  */
 
-public class Pessoa {
+public class Pessoa implements Serializable{
     private int idPessoa;
     private String nome;
     private String enderco;

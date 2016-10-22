@@ -28,7 +28,8 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ListaPessoaActivity" />
-        <activity android:name=".DashBoardActivity"></activity>
+        <activity android:name=".DashBoardActivity" />
+        <activity android:name=".EditarPessoaActivity"></activity>
     </application>
 
 </manifest>
