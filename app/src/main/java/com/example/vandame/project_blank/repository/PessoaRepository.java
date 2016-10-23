@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.vandame.project_blank.entidade.Pessoa;
@@ -55,7 +56,7 @@ public class PessoaRepository extends SQLiteOpenHelper {
         pessoa.setEnderco(cursor.getString(cursor.getColumnIndex("ENDERECO")));
         String cpf = cursor.getString(cursor.getColumnIndex("CPF"));
         String cnpj = cursor.getString(cursor.getColumnIndex("CNPJ"));
-        if (cpf != null) {
+        if (cpf != null && !"".equals(cpf)) {
             pessoa.setTipoPessoa(TipoPessoa.FISICA);
             pessoa.setCpfCnpj(cpf);
         } else {
@@ -63,13 +64,13 @@ public class PessoaRepository extends SQLiteOpenHelper {
             pessoa.setCpfCnpj(cnpj);
         }
 
-        int sexo =  cursor.getInt(cursor.getColumnIndex("SEXO"));
+        int sexo = cursor.getInt(cursor.getColumnIndex("SEXO"));
         pessoa.setSexo(Sexo.getSexo(sexo));
 
-        int profissao =  cursor.getInt(cursor.getColumnIndex("PROFISSAO"));
+        int profissao = cursor.getInt(cursor.getColumnIndex("PROFISSAO"));
         pessoa.setProfissao(Profissao.getProfissao(profissao));
 
-        long time =  cursor.getLong(cursor.getColumnIndex("DT_NASC"));
+        long time = cursor.getLong(cursor.getColumnIndex("DT_NASC"));
         Date dtNasd = new Date();
         dtNasd.setTime(time);
         pessoa.setDtNasc(dtNasd);
@@ -78,24 +79,17 @@ public class PessoaRepository extends SQLiteOpenHelper {
 
     public void salvarPessoa(Pessoa pessoa) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("NOME", pessoa.getNome());
-        contentValues.put("ENDERECO", pessoa.getEnderco());
-
-        switch (pessoa.getTipoPessoa()) {
-            case FISICA:
-                contentValues.put("CPF", pessoa.getCpfCnpj());
-                break;
-            case JURIDICA:
-                contentValues.put("CNPJ", pessoa.getCpfCnpj());
-                break;
-        }
-
-        contentValues.put("SEXO", pessoa.getSexo().ordinal());
-        contentValues.put("PROFISSAO", pessoa.getProfissao().ordinal());
-        contentValues.put("DT_NASC", pessoa.getDtNasc().getTime());
+        ContentValues contentValues = getContentValues(pessoa);
 
         db.insert("TB_PESSOA", null, contentValues);
+    }
+
+    public void atualizarPessoa(Pessoa pessoa) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = getContentValues(pessoa);
+
+        db.update("TB_PESSOA", contentValues, "ID_PESSOA = ?", new String[]{String.valueOf(pessoa.getIdPessoa())});
     }
 
     public List<Pessoa> listarPessoa() {
@@ -113,20 +107,44 @@ public class PessoaRepository extends SQLiteOpenHelper {
         return lista;
     }
 
-    public Pessoa consultarPessoaPorId(int idPessoa){
+    @NonNull
+    private ContentValues getContentValues(Pessoa pessoa) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("NOME", pessoa.getNome());
+        contentValues.put("ENDERECO", pessoa.getEnderco());
+
+        switch (pessoa.getTipoPessoa()) {
+            case FISICA:
+                contentValues.put("CPF", pessoa.getCpfCnpj());
+                contentValues.put("CNPJ", "");
+                break;
+            case JURIDICA:
+                contentValues.put("CNPJ", pessoa.getCpfCnpj());
+                contentValues.put("CPF", "");
+                break;
+        }
+
+        contentValues.put("SEXO", pessoa.getSexo().ordinal());
+        contentValues.put("PROFISSAO", pessoa.getProfissao().ordinal());
+        contentValues.put("DT_NASC", pessoa.getDtNasc().getTime());
+        return contentValues;
+    }
+
+
+    public Pessoa consultarPessoaPorId(int idPessoa) {
         Pessoa pessoa = new Pessoa();
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query("TB_PESSOA", null, "WHERE ID_PESSOA = ?", new String[]{String.valueOf(idPessoa)}, null, null, "NOME");
 
-        if(cursor.moveToNext()){
+        if (cursor.moveToNext()) {
             setPessoaFromCursor(cursor, pessoa);
         }
 
         return pessoa;
     }
 
-    public void removerPessoaPorId(int id){
+    public void removerPessoaPorId(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete("TB_PESSOA", "ID_PESSOA = ?", new String[]{String.valueOf(id)});

@@ -187,13 +187,14 @@ public class EditarPessoaActivity extends AppCompatActivity {
         spnProfissao.setAdapter(adapter);
     }
 
-    public void enviarPessoa(View view) {
+    public void atualizarPessoa(View view) {
         Pessoa p = montarPessoa();
         if (!validarPessoa(p)) {
-            pessoaRepository.salvarPessoa(p);
+            pessoaRepository.atualizarPessoa(p);
             Intent i = new Intent(this, ListaPessoaActivity.class);
             startActivity(i);
             finish();
+            Util.showMsgToast(this, "Atualização realizada com sucesso!");
         }
 
     }
@@ -246,6 +247,7 @@ public class EditarPessoaActivity extends AppCompatActivity {
     public Pessoa montarPessoa() {
         Pessoa pessoa = new Pessoa();
 
+        pessoa.setIdPessoa(pessoa.getIdPessoa());
         pessoa.setNome(edtNome.getText().toString());
         pessoa.setEnderco(edtEndereco.getText().toString());
         pessoa.setCpfCnpj(edtCpfCnpj.getText().toString());
